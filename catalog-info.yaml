@@ -1,0 +1,70 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: demo-play-demo-02-service
+  description: 'The Quarkus service for demo-play-demo-02 (WZH Quarkus Service with hosted Angular Frontend)'
+  annotations:
+    # argocd/app-name: demo-play-demo-02-dev
+    backstage.io/kubernetes-id: demo-play-demo-02
+    backstage.io/kubernetes-namespace: demo-play
+    backstage.io/techdocs-ref: dir:.
+    gitlab.com/project-slug: nepdemo/demo-play-demo-02
+    wzhlab.top/app-name: demo-play-demo-02-dev
+    argocd/app-selector: wzhlab.top/app-name=demo-play-demo-02-dev
+    argocd/instance-name: main
+    janus-idp.io/tekton : demo-play-demo-02
+  labels:
+    backstage.io/kubernetes-id: demo-play-demo-02
+  tags:
+    - java
+    - quarkus
+    - maven
+    - book
+    - example
+  links:
+    - url: https://console-openshift-console.apps.demo-01-rhsys.wzhlab.top/dev-pipelines/ns/demo-play/
+      title: Pipelines
+      icon: web
+    - url: https://console-openshift-console.apps.demo-01-rhsys.wzhlab.top/k8s/ns/demo-play/deployments/demo-play-demo-02
+      title: Deployment
+      icon: web
+    - url: https://devspaces.apps.demo-01-rhsys.wzhlab.top/#https://github.com/nepdemo/demo-play-demo-02?che-editor=che-incubator/che-code/latest&devfilePath=.devfile-vscode.yaml
+      title: OpenShift Dev Spaces
+      icon: web
+spec:
+  type: service
+  lifecycle: production
+  owner: "user:default/user1"
+  system: idp-system-demo-play
+  providesApis:
+    - demo-play-demo-02-api
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: idp-system-demo-play
+  tags:
+    - rhdh
+    - book
+spec:
+  owner: "user:default/user1"
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: demo-play-demo-02-api
+  description: API surface exposed by the Quarkus service
+  # links:
+  #   - url: https://demo-play-demo-02-demo-play.apps.demo-01-rhsys.wzhlab.top/q/swagger-ui
+  #     title: Swagger UI
+  #     icon: web
+  #   - url: https://github.com/nepdemo/demo-play-demo-02/-/blob/main/src/main/resources/META-INF/openapi.yaml
+  #     title: API Spec
+  #     icon: code
+spec:
+  type: openapi
+  lifecycle: production
+  owner: "user:default/user1"
+  system: idp-system-demo-play
+  definition:
+    $text: ./src/main/resources/META-INF/openapi.yaml
